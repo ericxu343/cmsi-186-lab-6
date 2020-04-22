@@ -1,19 +1,12 @@
 import java.util.Set;
 import java.util.*;
-// TODO of course, you may wish to import more things...
+
 
 public abstract class CoinChanger {
     abstract public int minCoins(int amount, Set<Integer> denominations);
 
     private static void checkArguments(int amount, Set<Integer> denominations) {
-        // TODO: Do all of your checks here, according to the lab instructions.
-        // Anything wrong? Throw an IllegalArgumentException.
-        //
-        // Error situations and messages are:
-        //   "Amount must be at least 1"
-        //   "At least one denomination is required"
-        //   "Denominations must all be positive"
-        //   "Denominations must have a 1-unit coin"
+
         if (amount < 1) {
           throw new IllegalArgumentException("Amount must be at least 1");
         }
@@ -37,10 +30,6 @@ public abstract class CoinChanger {
         public int minCoins(int amount, Set<Integer> denominations) {
             checkArguments(amount, denominations);
 
-            // TODO: Do the top-down-with-memoization algorithm here. You should
-            // do this recursively, so write a separate, private, recursive,
-            // "helper" method. This method here will call that recursive
-            // method with the memo object and the initial amount.
             int[] count = new int[amount];
             int result;
 
@@ -52,7 +41,7 @@ public abstract class CoinChanger {
             for (Integer denomination: denominations){
               sortedList.add(denomination);
             }
-            // sort the Array list
+
             Collections.sort(sortedList);
 
             var startTime = System.currentTimeMillis();
@@ -63,12 +52,11 @@ public abstract class CoinChanger {
             var timeElapsed = endTime - startTime;
             System.out.println("Execution time in milliseconds: " + timeElapsed);
             return result;
-            // TODO change this line, of course
+
         }
 
 
         private int PerformRecursion(int[] count, int amount, ArrayList<Integer> sortDenominations) {
-            // Recursion Method
 
             if (amount == 0){
               return 0;
@@ -108,13 +96,11 @@ public abstract class CoinChanger {
             for (Integer denomination: denominations){
               sortedList.add(denomination);
             }
-            // sort the Array list
+
             Collections.sort(sortedList);
 
             var startTime = System.currentTimeMillis();
 
-            // TODO: Implement this method using the bottom-up approach with
-            // a table.
             int max = amount + 1;
             int[] set = new int[amount + 1];
             Arrays.fill(set, max);
@@ -129,7 +115,7 @@ public abstract class CoinChanger {
             var endTime = System.currentTimeMillis();
             var timeElapsed = endTime - startTime;
             System.out.println("Execution time in milliseconds: " + timeElapsed);
-            return set[amount] > amount ? -1 : set[amount]; // TODO change this line, of course
+            return set[amount] > amount ? -1 : set[amount];
         }
 
 
