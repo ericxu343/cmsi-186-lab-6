@@ -42,7 +42,7 @@ public abstract class CoinChanger {
             // "helper" method. This method here will call that recursive
             // method with the memo object and the initial amount.
             int[] count = new int[amount];
-
+            int result;
 
             if (amount < 1) {
               return 0;
@@ -55,15 +55,21 @@ public abstract class CoinChanger {
             // sort the Array list
             Collections.sort(sortedList);
 
-            return PerformRecursion(count, amount, sortedList); // do the recursion with position at 0
+            var startTime = System.currentTimeMillis();
+
+            result = PerformRecursion(count, amount, sortedList); // do the recursion with position at 0
+
+            var endTime = System.currentTimeMillis();
+            var timeElapsed = endTime - startTime;
+            System.out.println("Execution time in milliseconds: " + timeElapsed);
+            return result;
             // TODO change this line, of course
-
-
         }
 
 
         private int PerformRecursion(int[] count, int amount, ArrayList<Integer> sortDenominations) {
             // Recursion Method
+
             if (amount == 0){
               return 0;
             }
@@ -74,13 +80,16 @@ public abstract class CoinChanger {
             if (count[amount -1] != 0){
               return count[amount -1];
             }
+
             int min = Integer.MAX_VALUE;
+
             for (Integer denomination: sortDenominations){
               int res = PerformRecursion(count, amount - denomination, sortDenominations);
               if (res >= 0 && res < min){
                 min = res + 1;
               }
             }
+
             count[amount -1] = (min == Integer.MAX_VALUE) ? -1: min;
             return count[amount -1];
 
@@ -91,6 +100,7 @@ public abstract class CoinChanger {
 
 
     public static class BottomUp extends CoinChanger {
+
         public int minCoins(int amount, Set<Integer> denominations) {
             checkArguments(amount, denominations);
 
@@ -100,6 +110,8 @@ public abstract class CoinChanger {
             }
             // sort the Array list
             Collections.sort(sortedList);
+
+            var startTime = System.currentTimeMillis();
 
             // TODO: Implement this method using the bottom-up approach with
             // a table.
@@ -114,6 +126,9 @@ public abstract class CoinChanger {
                 }
               }
             }
+            var endTime = System.currentTimeMillis();
+            var timeElapsed = endTime - startTime;
+            System.out.println("Execution time in milliseconds: " + timeElapsed);
             return set[amount] > amount ? -1 : set[amount]; // TODO change this line, of course
         }
 
