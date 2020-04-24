@@ -30,8 +30,7 @@ public abstract class CoinChanger {
         public int minCoins(int amount, Set<Integer> denominations) {
             checkArguments(amount, denominations);
 
-            int[] count = new int[amount];
-            int result;
+            int[] memo = new int[amount];
 
             if (amount < 1) {
               return 0;
@@ -44,19 +43,12 @@ public abstract class CoinChanger {
 
             Collections.sort(sortedList);
 
-            var startTime = System.currentTimeMillis();
-
-            result = PerformRecursion(count, amount, sortedList); // do the recursion with position at 0
-
-            var endTime = System.currentTimeMillis();
-            var timeElapsed = endTime - startTime;
-            System.out.println("Execution time in milliseconds: " + timeElapsed);
-            return result;
+            return PerformRecursion(memo, amount, sortedList);
 
         }
 
 
-        private int PerformRecursion(int[] count, int amount, ArrayList<Integer> sortDenominations) {
+        private int PerformRecursion(int[] memo, int amount, ArrayList<Integer> sortDenominations) {
 
             if (amount == 0){
               return 0;
@@ -65,21 +57,21 @@ public abstract class CoinChanger {
               return -1;
             }
 
-            if (count[amount -1] != 0){
-              return count[amount -1];
+            if (memo[amount -1] != 0){
+              return memo[amount -1];
             }
 
             int min = Integer.MAX_VALUE;
 
             for (Integer denomination: sortDenominations){
-              int res = PerformRecursion(count, amount - denomination, sortDenominations);
+              int res = PerformRecursion(memo, amount - denomination, sortDenominations);
               if (res >= 0 && res < min){
                 min = res + 1;
               }
             }
 
-            count[amount -1] = (min == Integer.MAX_VALUE) ? -1: min;
-            return count[amount -1];
+            memo[amount -1] = (min == Integer.MAX_VALUE) ? -1: min;
+            return memo[amount -1];
 
         }
 
@@ -99,8 +91,6 @@ public abstract class CoinChanger {
 
             Collections.sort(sortedList);
 
-            var startTime = System.currentTimeMillis();
-
             int max = amount + 1;
             int[] set = new int[amount + 1];
             Arrays.fill(set, max);
@@ -112,9 +102,6 @@ public abstract class CoinChanger {
                 }
               }
             }
-            var endTime = System.currentTimeMillis();
-            var timeElapsed = endTime - startTime;
-            System.out.println("Execution time in milliseconds: " + timeElapsed);
             return set[amount] > amount ? -1 : set[amount];
         }
 
